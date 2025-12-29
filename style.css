@@ -1,0 +1,281 @@
+#jpkr-dual-container {
+  --jpkr-font-size: 18px;
+  --jpkr-text-color: #ffffff;
+  --jpkr-bg-color: #000000cc;
+  --jpkr-lang1-color: #56a1ff;
+  --jpkr-lang2-color: #ffb856;
+  --jpkr-border-color: #ffffff14;
+  position: fixed;
+  left: 50%;
+  bottom: 10%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  max-width: 90vw;
+  pointer-events: auto;
+  z-index: 2147483000;
+  font-family: "Noto Sans JP", "Noto Sans KR", "Segoe UI", sans-serif;
+  cursor: move;
+  user-select: none;
+}
+
+.jpkr-netflix-box {
+  background: var(--jpkr-bg-color);
+  border-radius: 4px;
+  padding: 8px 16px;
+  text-align: center;
+  max-width: 100%;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.jpkr-sub-line {
+  font-size: var(--jpkr-font-size);
+  line-height: 1.5;
+  font-weight: 600;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8), -1px -1px 2px rgba(0, 0, 0, 0.8);
+  padding: 2px 0;
+  white-space: pre-wrap;
+  word-break: keep-all;
+}
+
+.jpkr-sub-line.lang1 {
+  color: var(--jpkr-lang1-color);
+}
+
+.jpkr-sub-line.lang2 {
+  color: var(--jpkr-lang2-color);
+}
+
+.jpkr-sub-line:empty {
+  display: none;
+}
+
+#jpkr-dual-container.dragging {
+  opacity: 0.85;
+  transition: none;
+}
+
+#jpkr-settings-toggle {
+  position: fixed;
+  right: 12px;
+  bottom: 15%;
+  z-index: 2147483001;
+  background: rgba(0, 0, 0, 0.8);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 13px;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  transition: background 0.2s, transform 0.2s;
+}
+
+#jpkr-settings-toggle:hover {
+  background: rgba(30, 30, 30, 0.9);
+  transform: scale(1.05);
+}
+
+#jpkr-settings-panel {
+  position: fixed;
+  right: 12px;
+  bottom: 22%;
+  width: 260px;
+  padding: 14px;
+  background: rgba(20, 20, 20, 0.95);
+  color: #f0f0f0;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+  display: none;
+  z-index: 2147483001;
+  font-size: 13px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+#jpkr-settings-panel.open {
+  display: block;
+}
+
+.jpkr-settings-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.jpkr-title {
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.jpkr-subtitle {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.jpkr-section {
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.jpkr-label {
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 12px;
+}
+
+.jpkr-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 6px 0;
+  color: rgba(255, 255, 255, 0.85);
+  cursor: pointer;
+}
+
+.jpkr-toggle input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: #56a1ff;
+}
+
+.jpkr-control {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 8px 0;
+}
+
+.jpkr-control label {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 12px;
+}
+
+.jpkr-range {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.jpkr-range input[type="range"] {
+  width: 80px;
+  accent-color: #56a1ff;
+}
+
+.jpkr-range span {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.6);
+  min-width: 32px;
+}
+
+.jpkr-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+#jpkr-settings-panel button {
+  flex: 1;
+  padding: 8px;
+  border: none;
+  border-radius: 6px;
+  background: rgba(86, 161, 255, 0.2);
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 12px;
+  border: 1px solid rgba(86, 161, 255, 0.3);
+  transition: background 0.2s;
+}
+
+#jpkr-settings-panel button:hover {
+  background: rgba(86, 161, 255, 0.35);
+}
+
+.jpkr-select,
+.jpkr-select-small {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  color: #ffffff;
+  padding: 4px 8px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.jpkr-select-small {
+  font-size: 11px;
+  padding: 3px 6px;
+}
+
+.jpkr-select option,
+.jpkr-select-small option {
+  background: #222;
+  color: #fff;
+}
+
+input[type="color"] {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  width: 36px;
+  height: 24px;
+  padding: 2px;
+  cursor: pointer;
+}
+
+input[type="file"] {
+  color: #e0e0e0;
+  font-size: 11px;
+  max-width: 140px;
+}
+
+input[type="file"]::file-selector-button {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  color: #ffffff;
+  padding: 4px 8px;
+  margin-right: 8px;
+  cursor: pointer;
+  font-size: 11px;
+}
+
+@media (max-width: 768px) {
+  #jpkr-dual-container {
+    bottom: 12%;
+    max-width: 95vw;
+  }
+
+  .jpkr-netflix-box {
+    padding: 6px 12px;
+  }
+
+  .jpkr-sub-line {
+    font-size: 15px;
+  }
+
+  #jpkr-settings-toggle {
+    bottom: 18%;
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+
+  #jpkr-settings-panel {
+    width: 240px;
+    right: 8px;
+  }
+}

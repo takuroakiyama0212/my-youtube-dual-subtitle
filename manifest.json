@@ -1,0 +1,40 @@
+{
+  "manifest_version": 3,
+  "name": "JP ↔ KR Dual Subtitles",
+  "description": "Show Korean and Japanese subtitles side by side on YouTube and Netflix with on-the-fly translation.",
+  "version": "1.0.0",
+  "icons": {
+    "48": "icon.png",
+    "128": "icon.png"
+  },
+  "permissions": ["storage"],
+  "host_permissions": [
+    "https://*.youtube.com/*",
+    "https://youtube.com/*",
+    "https://www.youtube.com/*",
+    "https://music.youtube.com/*",
+    "https://m.youtube.com/*",
+    "https://www.netflix.com/*",
+    "https://translate.googleapis.com/*",
+    "https://api-free.deepl.com/*",
+    "https://api.deepl.com/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://*.youtube.com/*",
+        "https://youtube.com/*",
+        "https://www.youtube.com/*",
+        "https://music.youtube.com/*",
+        "https://m.youtube.com/*",
+        "https://www.netflix.com/*"
+      ],
+      "js": ["content.js"],
+      "css": ["style.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_title": "JP ↔ KR Dual Subtitles"
+  }
+}
