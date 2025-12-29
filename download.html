@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JP ↔ KR Dual Subtitles | Master Languages on Netflix & YouTube</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Noto+Sans+JP:wght@400;700&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Language Reactor / Netflix Dark Theme Palette */
+            --bg-dark: #141414;
+            --bg-card: #1f1f1f;
+            --primary: #e50914; /* Netflix Red accent */
+            --accent-blue: #56a1ff; /* Matches your extension's Lang 1 */
+            --accent-gold: #ffb856; /* Matches your extension's Lang 2 */
+            --text-main: #ffffff;
+            --text-muted: #b3b3b3;
+            --nav-height: 70px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        /* --- Navigation --- */
+        nav {
+            height: var(--nav-height);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 5%;
+            background: rgba(20, 20, 20, 0.95);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 800;
+            font-size: 1.2rem;
+            letter-spacing: -0.5px;
+        }
+
+        .logo img {
+            height: 32px;
+            border-radius: 6px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-main);
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            padding: 10px 24px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.2s, background-color 0.2s;
+        }
+
+        .btn-primary:hover {
+            background-color: #f40612;
+            transform: translateY(-1px);
+        }
+
+        /* --- Hero Section --- */
+        header {
+            margin-top: var(--nav-height);
+            min-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 60px 20px;
+            background: radial-gradient(circle at center, #2a2a2a 0%, #141414 70%);
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            max-width: 800px;
+        }
+
+        h1 span {
+            background: linear-gradient(to right, var(--accent-blue), var(--accent-gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin-bottom: 40px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 60px;
+        }
+
+        .btn-secondary {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            padding: 10px 24px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        /* --- Live Preview (Simulating your Extension) --- */
+        .preview-container {
+            width: 100%;
+            max-width: 900px;
+            aspect-ratio: 16/9;
+            background: #000;
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            border: 1px solid #333;
+            background-image: url('https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=1600&auto=format&fit=crop'); /* Placeholder generic video background */
+            background-size: cover;
+            background-position: center;
+        }
+
+        .video-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent 40%);
+        }
+
+        /* Styles copied and adapted from your style.css for authenticity */
+        .jpkr-mockup-box {
+            position: absolute;
+            left: 50%;
+            bottom: 10%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 4px;
+            padding: 12px 24px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            backdrop-filter: blur(4px);
+            font-family: "Noto Sans JP", "Noto Sans KR", sans-serif;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .jpkr-line {
+            font-size: 22px;
+            font-weight: 700;
+            line-height: 1.4;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.9);
+        }
+
+        .lang-kr { color: var(--accent-blue); margin-bottom: 4px; }
+        .lang-jp { color: var(--accent-gold); }
+
+        /* --- Features Grid --- */
+        .features-section {
+            padding: 100px 5%;
+            background: var(--bg-dark);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: var(--bg-card);
+            padding: 30px;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: transform 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255,255,255,0.2);
+        }
+
+        .card h3 {
+            margin-bottom: 12px;
+            font-size: 1.25rem;
+        }
+
+        .card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .icon-box {
+            width: 48px;
+            height: 48px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        /* --- Installation --- */
+        .install-section {
+            padding: 100px 5%;
+            background: #1a1a1a;
+        }
+
+        .steps-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .step {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+            align-items: flex-start;
+        }
+
+        .step-num {
+            background: var(--primary);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .step-content h4 {
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+
+        .step-content p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* --- Footer --- */
+        footer {
+            padding: 60px 5%;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            .nav-links { display: none; }
+            .jpkr-line { font-size: 16px; }
+            .preview-container { border-radius: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">
+            <img src="icon.png" alt="Icon" onerror="this.style.display='none'">
+            <span>JP ↔ KR Subs</span>
+        </div>
+        <div class="nav-links">
+            <a href="#features">Features</a>
+            <a href="#install">How to Install</a>
+        </div>
+        <a href="Dual Subtitles.zip" download="Dual Subtitles.zip" class="btn-primary">Download Now</a>
+    </nav>
+
+    <header>
+        <h1>Master Japanese & Korean<br>with <span>Dual Subtitles</span></h1>
+        <p class="subtitle">
+            Seamlessly translate Netflix and YouTube captions on the fly. 
+            Watch your favorite content with Korean and Japanese subtitles displayed side-by-side.
+        </p>
+
+        <div class="hero-buttons">
+            <a href="Dual Subtitles.zip" download="Dual Subtitles.zip" class="btn-primary">Download Extension (v1.0.0)</a>
+            <a href="#features" class="btn-secondary">Learn More</a>
+        </div>
+
+        <div class="preview-container">
+            <div class="video-overlay"></div>
+
+            <div class="jpkr-mockup-box">
+                <div class="jpkr-line lang-kr">우리는 넷플릭스와 유튜브로 언어를 배웁니다.</div>
+                <div class="jpkr-line lang-jp">私たちはNetflixとYouTubeで言語を学びます。</div>
+            </div>
+
+            <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 20px; display: flex; align-items: center; gap: 15px;">
+                <div style="width: 20px; height: 20px; background: white; -webkit-mask: url('data:image/svg+xml;utf8,<svg viewBox=\'0 0 24 24\' xmlns=\'http://www.w3.org/2000/svg\'><path d=\'M8 5v14l11-7z\'/></svg>') no-repeat center;"></div>
+                <div style="flex: 1; height: 4px; background: rgba(255,255,255,0.3); border-radius: 2px;">
+                    <div style="width: 30%; height: 100%; background: #e50914;"></div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section id="features" class="features-section">
+        <div class="section-header">
+            <h2>Why use JP ↔ KR Dual Subs?</h2>
+            <p style="color: var(--text-muted);">Built for language learners who immerse themselves in media.</p>
+        </div>
+
+        <div class="grid">
+            <div class="card">
+                <div class="icon-box">📺</div>
+                <h3>YouTube & Netflix Support</h3>
+                <p>Works natively on your favorite streaming platforms. Automatically detects active videos and overlays translations without interrupting playback.</p>
+            </div>
+            <div class="card">
+                <div class="icon-box">🧠</div>
+                <h3>Smart Translation</h3>
+                <p>Uses Google Translate (default) or DeepL to provide accurate context. If the original audio is Japanese, it shows Korean, and vice-versa.</p>
+            </div>
+            <div class="card">
+                <div class="icon-box">🎨</div>
+                <h3>Fully Customizable</h3>
+                <p>Change font sizes, text colors, and background opacity to match your viewing preference. Drag the subtitle box anywhere on the screen.</p>
+            </div>
+            <div class="card">
+                <div class="icon-box">📂</div>
+                <h3>External Subtitles</h3>
+                <p>Have a local `.srt` or `.vtt` file? Upload it directly into the player to get dual subs even if the video doesn't have them.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="install" class="install-section">
+        <div class="section-header">
+            <h2>How to Install</h2>
+            <p style="color: var(--text-muted);">Since this is a developer version, installation takes 30 seconds.</p>
+        </div>
+
+        <div class="steps-container">
+            <div class="step">
+                <div class="step-num">1</div>
+                <div class="step-content">
+                    <h4>Download the files</h4>
+                    <p>Click the download button above to get the <code>Dual Subtitles.zip</code> file. Unzip it into a folder on your computer.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num">2</div>
+                <div class="step-content">
+                    <h4>Open Chrome Extensions</h4>
+                    <p>Type <code>chrome://extensions</code> in your address bar and press Enter.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num">3</div>
+                <div class="step-content">
+                    <h4>Enable Developer Mode</h4>
+                    <p>Toggle the "Developer mode" switch in the top right corner of the extensions page.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num">4</div>
+                <div class="step-content">
+                    <h4>Load Unpacked</h4>
+                    <p>Click the "Load unpacked" button and select the folder where you unzipped the files.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 JP ↔ KR Dual Subtitles. Open source and privacy-focused.</p>
+        <p style="margin-top: 10px; font-size: 0.8rem; color: #666;">Not affiliated with YouTube, Netflix, or Google.</p>
+    </footer>
+
+</body>
+</html>
