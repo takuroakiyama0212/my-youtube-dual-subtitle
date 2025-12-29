@@ -192,7 +192,12 @@
   }
 
   function createOverlay() {
-    if (overlay) return overlay;
+    if (overlay && document.body.contains(overlay)) return overlay;
+    const existing = document.getElementById('jpkr-dual-container');
+    if (existing) {
+      overlay = existing;
+      return overlay;
+    }
     const container = document.createElement('div');
     container.id = 'jpkr-dual-container';
     container.innerHTML = `
@@ -264,6 +269,15 @@
     }
     
     return uniqueSentences.join(' ');
+  }
+
+  function normalizeForCompare(text) {
+    if (!text) return '';
+    return String(text)
+      .toLowerCase()
+      .replace(/\s+/g, ' ')
+      .trim()
+      .replace(/[^\w\s\u3040-\u30ff\u4e00-\u9faf\uac00-\ud7af]/g, '');
   }
 
   function isYouTube() {
@@ -621,8 +635,13 @@
     const lang2Line = root.querySelector('[data-role="lang2"]');
     const netflixBox = root.querySelector('.jpkr-netflix-box');
 
-    const cleanLang1 = cleanDuplicates(lang1Text);
-    const cleanLang2 = cleanDuplicates(lang2Text);
+    let cleanLang1 = cleanDuplicates(lang1Text);
+    let cleanLang2 = cleanDuplicates(lang2Text);
+
+    // Prevent showing the exact same subtitle twice (e.g. same target languages / same translation result).
+    if (normalizeForCompare(cleanLang1) && normalizeForCompare(cleanLang1) === normalizeForCompare(cleanLang2)) {
+      cleanLang2 = '';
+    }
 
     const showLang1 = visibility.lang1 && cleanLang1;
     const showLang2 = visibility.lang2 && cleanLang2;
@@ -964,7 +983,8 @@
       }
 
       lastCaptionTime = Date.now();
-      const captionKey = `${sourceLabel}:${caption}`;
+      // Dedup by caption text (source may change between dom/yt/nf/ext and cause duplicate renders)
+      const captionKey = caption;
       if (captionKey === lastCaption) return;
       lastCaption = captionKey;
       handleCaption(caption, sourceLabel);
